@@ -55,7 +55,7 @@ function makeProducerDiv(producer) {
   <div class="producer-column">
     <div>Quantity: ${producer.qty}</div>
     <div>Coffee/second: ${producer.cps}</div>
-    <div>Cost: ${currentCost} coffee</div>
+    <div>Cost: ${currentCost} covfefe</div>
   </div>
   `;
     containerDiv.innerHTML = html;
