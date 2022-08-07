@@ -5,11 +5,13 @@
  **************/
 
 function updateCoffeeView(coffeeQty) {
-    // your code here
+    const counter = document.querySelector('#coffee_counter');
+    counter.innerText = coffeeQty;
 }
 
 function clickCoffee(data) {
-    // your code here
+    updateCoffeeView(++data.coffee);
+    renderProducers(data);
 }
 
 /**************
@@ -17,15 +19,26 @@ function clickCoffee(data) {
  **************/
 
 function unlockProducers(producers, coffeeCount) {
-    // your code here
+    for (let i = 0; i < producers.length; i++) {
+        if (coffeeCount >= producers[i].price / 2) producers[i].unlocked = true;
+    }
 }
 
 function getUnlockedProducers(data) {
-    // your code here
+    //rewrite this using filter method??
+    //should maybe call unlock producers here
+    const unlockedProducerArray = [];
+    for (const producer of data.producers) {
+        if (producer.unlocked) unlockedProducerArray.push(producer);
+    }
+    return unlockedProducerArray;
 }
 
 function makeDisplayNameFromId(id) {
-    // your code here
+    return id
+        .split('_')
+        .map(ele => ele[0].toUpperCase() + ele.slice(1))
+        .join(' ');
 }
 
 // You shouldn't need to edit this function-- its tests should pass once you've written makeDisplayNameFromId
@@ -50,11 +63,38 @@ function makeProducerDiv(producer) {
 }
 
 function deleteAllChildNodes(parent) {
-    // your code here
+    //gotta be a better way to do this, doesnt work with just one loop
+    //probably because deleting the chilren while iterating confuses the loop
+    const children = [];
+    for (const child of parent.childNodes) {
+        children.push(child);
+    }
+    for (const child of children) {
+        parent.removeChild(child);
+    }
+    //example from mdn, looks much cleaner
+    /*let element = document.getElementById("top");
+    while (element.firstChild) {
+        element.removeChild(element.firstChild);
+    }*/
 }
 
 function renderProducers(data) {
-    // your code here
+    //data is an object with # of coffee and array of producers
+    // deleteAllChildNodes - can delete all the producer divs
+    //unlockProducers - allows corect producers to be got
+    //getUnlockedProducers - array of unlocked producers
+    //makeProducerDiv - create child node
+    const producerContainer = document.getElementById('producer_container');
+    deleteAllChildNodes(producerContainer);
+
+    unlockProducers(data.producers, data.coffee);
+    const producers = getUnlockedProducers(data);
+
+    for (const producer of producers) {
+        let div = makeProducerDiv(producer);
+        producerContainer.appendChild(div);
+    }
 }
 
 /**************
