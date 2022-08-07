@@ -416,11 +416,11 @@ describe('Slice 3: Buying Producers & Tick', function () {
             };
         });
 
-        xit('returns an object', function () {
+        it('returns an object', function () {
             const result = code.getProducerById(data, 'producer_A');
             expect(result).to.be.an('object');
         });
-        xit('returns the correct producer object', function () {
+        it('returns the correct producer object', function () {
             const testIDs = ['producer_A', 'producer_B', 'producer_C'];
             const results = testIDs.map(testID =>
                 code.getProducerById(data, testID)
@@ -429,7 +429,7 @@ describe('Slice 3: Buying Producers & Tick', function () {
             expect(results[1].price).to.be.equal(200);
             expect(results[2].price).to.be.equal(500);
         });
-        xit('is not hardcoded to pass the tests', function () {
+        it('is not hardcoded to pass the tests', function () {
             // Just like the last test, but we've reversed the order of the producers in the data.
             data.producers = data.producers.reverse();
             const testIDs = ['producer_A', 'producer_B', 'producer_C'];
@@ -456,15 +456,15 @@ describe('Slice 3: Buying Producers & Tick', function () {
             };
         });
 
-        xit('returns a boolean', function () {
+        it('returns a boolean', function () {
             const result = code.canAffordProducer(data, 'producer_A');
             expect(result).to.be.a('boolean');
         });
-        xit('returns true if the player can afford the producer', function () {
+        it('returns true if the player can afford the producer', function () {
             const result = code.canAffordProducer(data, 'producer_A');
             expect(result).to.be.equal(true);
         });
-        xit('returns false if the player cannot afford the producer', function () {
+        it('returns false if the player cannot afford the producer', function () {
             const result = code.canAffordProducer(data, 'producer_B');
             expect(result).to.be.equal(false);
         });
@@ -476,7 +476,7 @@ describe('Slice 3: Buying Producers & Tick', function () {
             resetJSDOM();
         });
 
-        xit('calls document.getElementById() or document.querySelector()', function () {
+        it('calls document.getElementById() or document.querySelector()', function () {
             const spyOnGetElementById = sinon.spy(document, 'getElementById');
             const spyOnQuerySelector = sinon.spy(document, 'querySelector');
             code.updateCPSView(100);
@@ -487,7 +487,7 @@ describe('Slice 3: Buying Producers & Tick', function () {
             spyOnQuerySelector.restore();
         });
 
-        xit('updates the total CPS indicator to display the current total CPS', function () {
+        it('updates the total CPS indicator to display the current total CPS', function () {
             const cpsIndicator = document.getElementById('cps');
 
             code.updateCPSView(50);
@@ -499,12 +499,12 @@ describe('Slice 3: Buying Producers & Tick', function () {
     });
 
     describe('The updatePrice function', function () {
-        xit('returns an integer, not a float', function () {
+        it('returns an integer, not a float', function () {
             const result = code.updatePrice(501);
             expect(result).to.be.a('number');
             expect(result % 1).to.be.equal(0);
         });
-        xit('returns 125% of the input price, rounded down', function () {
+        it('returns 125% of the input price, rounded down', function () {
             const result = code.updatePrice(501);
             expect(result).to.be.equal(626);
         });
@@ -525,21 +525,21 @@ describe('Slice 3: Buying Producers & Tick', function () {
             };
         });
 
-        xit('returns a boolean', function () {
+        it('returns a boolean', function () {
             const result = code.attemptToBuyProducer(data, 'producer_A');
             expect(result).to.be.a('boolean');
         });
 
-        xit('returns false if the player cannot afford the producer', function () {
+        it('returns false if the player cannot afford the producer', function () {
             const result = code.attemptToBuyProducer(data, 'producer_B');
             expect(result).to.be.equal(false);
         });
-        xit('returns true if the player can afford the producer', function () {
+        it('returns true if the player can afford the producer', function () {
             const result = code.attemptToBuyProducer(data, 'producer_A');
             expect(result).to.be.equal(true);
         });
 
-        xit('increments the quantity of the producer in question only if the player can afford it', function () {
+        it('increments the quantity of the producer in question only if the player can afford it', function () {
             code.attemptToBuyProducer(data, 'producer_A');
             expect(data.producers[0].qty).to.be.equal(1);
 
@@ -547,7 +547,7 @@ describe('Slice 3: Buying Producers & Tick', function () {
             expect(data.producers[1].qty).to.be.equal(0);
         });
 
-        xit("decrements the player's coffee by the *current* price of the producer, but only if the player can afford it", function () {
+        it("decrements the player's coffee by the *current* price of the producer, but only if the player can afford it", function () {
             code.attemptToBuyProducer(data, 'producer_B');
             expect(data.coffee).to.be.equal(100);
 
@@ -556,7 +556,7 @@ describe('Slice 3: Buying Producers & Tick', function () {
         });
 
         // Hint: Use a function already written.
-        xit('updates the price of the producer to 125% of the previous price, rounded down, but only if the player can afford the producer', function () {
+        it('updates the price of the producer to 125% of the previous price, rounded down, but only if the player can afford the producer', function () {
             code.attemptToBuyProducer(data, 'producer_A');
             expect(data.producers[0].price).to.be.equal(62);
 
@@ -565,14 +565,14 @@ describe('Slice 3: Buying Producers & Tick', function () {
         });
 
         // Hint: Use a function already written.
-        xit('updates the total CPS, but only if the player can afford the producer', function () {
+        it('updates the total CPS, but only if the player can afford the producer', function () {
             code.attemptToBuyProducer(data, 'producer_A');
             expect(data.totalCPS).to.be.equal(5);
 
             code.attemptToBuyProducer(data, 'producer_B');
             expect(data.totalCPS).to.be.equal(5);
         });
-        xit("does not modify data in any way if the player tries to buy something they can't afford", function () {
+        it("does not modify data in any way if the player tries to buy something they can't afford", function () {
             const snapshot = JSON.stringify(data);
             code.attemptToBuyProducer(data, 'producer_B');
             expect(JSON.stringify(data)).to.equal(snapshot);

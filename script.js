@@ -102,23 +102,36 @@ function renderProducers(data) {
  **************/
 
 function getProducerById(data, producerId) {
-    // your code here
+    for (const producer of data.producers) {
+        if (producer.id === producerId) return producer;
+    }
 }
 
 function canAffordProducer(data, producerId) {
-    // your code here
+    const producer = getProducerById(data, producerId);
+    if (data.coffee > producer.price) return true;
+    else return false;
 }
 
 function updateCPSView(cps) {
-    // your code here
+    const cpsNum = document.getElementById('cps');
+    cpsNum.innerText = cps;
 }
 
 function updatePrice(oldPrice) {
-    // your code here
+    return Math.floor(oldPrice * 1.25);
 }
 
 function attemptToBuyProducer(data, producerId) {
-    // your code here
+    const producer = getProducerById(data, producerId);
+    if (data.coffee > producer.price) {
+        producer.qty++;
+        data.coffee -= producer.price;
+        producer.price = updatePrice(producer.price);
+        data.totalCPS += producer.cps;
+        updateCPSView(data.totalCPS);
+        return true;
+    } else return false;
 }
 
 function buyButtonClick(event, data) {
