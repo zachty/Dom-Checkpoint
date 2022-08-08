@@ -181,6 +181,20 @@ if (typeof process === 'undefined') {
         buyButtonClick(event, data);
     });
 
+    const autoClicker = document.getElementById('auto');
+    let bool = false;
+    let intervalID;
+    autoClicker.addEventListener('click', () => {
+        bool = !bool;
+        if (bool) {
+            intervalID = setInterval(() => {
+                bigCoffee.click();
+            }, 10);
+        } else {
+            clearInterval(intervalID);
+        }
+    });
+
     //load game if it was saved
     if (localStorage.length) {
         console.log('loaded!');
