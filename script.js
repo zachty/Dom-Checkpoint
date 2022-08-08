@@ -124,7 +124,8 @@ function updatePrice(oldPrice) {
 
 function attemptToBuyProducer(data, producerId) {
     const producer = getProducerById(data, producerId);
-    if (data.coffee > producer.price) {
+    //could use canAffordProducer, but I already have producer here ^
+    if (data.coffee >= producer.price) {
         producer.qty++;
         data.coffee -= producer.price;
         producer.price = updatePrice(producer.price);
@@ -180,8 +181,23 @@ if (typeof process === 'undefined') {
         buyButtonClick(event, data);
     });
 
+    //load game if it was saved
+    if (localStorage.length) {
+        console.log('loaded!');
+        data.coffee = Number(localStorage.getItem('coffee'));
+        updateCPSView((data.totalCPS = Number(localStorage.getItem('cps'))));
+        data.producers = JSON.parse(localStorage.getItem('producers'));
+    }
+
     // Call the tick function passing in the data object once per second
     setInterval(() => tick(data), 1000);
+
+    //save the game
+    setInterval(() => {
+        localStorage.setItem('coffee', data.coffee);
+        localStorage.setItem('cps', data.totalCPS);
+        localStorage.setItem('producers', JSON.stringify(data.producers));
+    }, 5000); //set local storage every 5 seconds
 }
 // Meanwhile, if we aren't in a browser and are instead in node
 // we'll need to exports the code written here so we can import and
