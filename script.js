@@ -197,7 +197,7 @@ if (typeof process === 'undefined') {
         localStorage.setItem('coffee', data.coffee);
         localStorage.setItem('cps', data.totalCPS);
         localStorage.setItem('producers', JSON.stringify(data.producers));
-    }, 5000); //set local storage every 5 seconds
+    }, 60000); //set local storage every 60 seconds
 }
 // Meanwhile, if we aren't in a browser and are instead in node
 // we'll need to exports the code written here so we can import and
